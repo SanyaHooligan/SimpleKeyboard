@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SimpleKeyboard
+namespace SimpleKeyboard.Service
 {
     [Serializable]
     public class Command : ICommand

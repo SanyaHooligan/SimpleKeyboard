@@ -1,0 +1,95 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SimpleKeyboard.Service
+{
+    public class WinApiInteraction
+    {
+        //[DllImport("user32.dll", SetLastError = true)]
+        //static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+        //public static void PressKey(Keys key, bool up)
+        //{
+        //    const int KEYEVENTF_EXTENDEDKEY = 0x1;
+        //    const int KEYEVENTF_KEYUP = 0x2;
+        //    if (up)
+        //    {
+        //        keybd_event((byte)key, 0x45, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, (UIntPtr)0);
+        //    }
+        //    else
+        //    {
+        //        keybd_event((byte)key, 0x45, KEYEVENTF_EXTENDEDKEY, (UIntPtr)0);
+        //    }
+        //}
+        public static void ChangeLanguage(KeyboardCurrentState state)
+        {
+            if (state == KeyboardCurrentState.eng)
+                InputLanguage.CurrentInputLanguage = InputLanguage.FromCulture(new System.Globalization.CultureInfo("en-US"));
+            if (state == KeyboardCurrentState.rus)
+                InputLanguage.CurrentInputLanguage = InputLanguage.FromCulture(new System.Globalization.CultureInfo("ru-RU"));
+            else
+                InputLanguage.CurrentInputLanguage = InputLanguage.FromCulture(new System.Globalization.CultureInfo("en-US"));
+        }
+        [StructLayout(LayoutKind.Explicit, Size = 28)]
+        public struct Input
+        {
+            [FieldOffset(0)]
+            public uint type;
+            [FieldOffset(4)]
+            public KeyboardInput ki;
+        }
+
+        public struct KeyboardInput
+        {
+            public ushort wVk;
+            public ushort wScan;
+            public uint dwFlags;
+            public long time;
+            public uint dwExtraInfo;
+        }
+
+        const int KEYEVENTF_KEYUP = 0x0002;
+        const int INPUT_KEYBOARD = 1;
+
+        [DllImport("user32.dll")]
+        public static extern int SendInput(uint cInputs, ref Input inputs, int cbSize);
+
+        [DllImport("user32.dll")]
+        static extern short GetKeyState(int nVirtKey);
+
+        [DllImport("user32.dll")]
+        static extern ushort MapVirtualKey(int wCode, int wMapType);
+        
+        public static void HoldKey(Keys vk)
+        {
+            ushort nScan = MapVirtualKey((ushort)vk, 0);
+
+            Input input = new Input();
+            input.type = INPUT_KEYBOARD;
+            input.ki.wVk = (ushort)vk;
+            input.ki.wScan = nScan;
+            input.ki.dwFlags = 0;
+            input.ki.time = 0;
+            input.ki.dwExtraInfo = 0;
+            SendInput(1, ref input, Marshal.SizeOf(input)).ToString();
+        }
+
+        public static void ReleaseKey(Keys vk)
+        {
+            ushort nScan = MapVirtualKey((ushort)vk, 0);
+
+            Input input = new Input();
+            input.type = INPUT_KEYBOARD;
+            input.ki.wVk = (ushort)vk;
+            input.ki.wScan = nScan;
+            input.ki.dwFlags = KEYEVENTF_KEYUP;
+            input.ki.time = 0;
+            input.ki.dwExtraInfo = 0;
+            SendInput(1, ref input, Marshal.SizeOf(input));
+        }
+    }
+}

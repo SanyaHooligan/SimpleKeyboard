@@ -5,22 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleKeyboard"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="1000">
+        Title="MainWindow" Height="500" Width="1100">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="300"/>
         </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Center">
+            <TextBox Width="400" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" AllowDrop="True" TextWrapping="Wrap"></TextBox>
+            <RichTextBox  Width="400" FontSize="18" Margin="0,20,0,0" HorizontalAlignment="Center" Height="60" VerticalAlignment="Center"></RichTextBox>
+        </StackPanel>
+        
         <Grid VerticalAlignment="Bottom" Grid.Row="1">
-            <local:SimpleKeyboardControl x:Name="awesome">
-                <!--<local:SimpleKeyboardControl.MainBackground>
+            <local:SimpleKeyboardControl x:Name="awesome" MainBorderBrush="#FFD4D4D4" MainBorderThickness="0,2,0,0" KeyBackground="#FFF0F0F0" KeyBorderBrush="#FF919191">
+                <local:SimpleKeyboardControl.MainBackground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Offset="0" Color="#FFF9F9F9"></GradientStop>
                         <GradientStop Offset="1" Color="Gainsboro"></GradientStop>
                     </LinearGradientBrush>
-                </local:SimpleKeyboardControl.MainBackground>-->
+                </local:SimpleKeyboardControl.MainBackground>
             </local:SimpleKeyboardControl>
-            <!--<Border x:Name="testborder"></Border>-->
         </Grid>
     </Grid>
 </Window>

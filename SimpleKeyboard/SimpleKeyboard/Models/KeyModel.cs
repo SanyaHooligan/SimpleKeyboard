@@ -6,35 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SimpleKeyboard
+namespace SimpleKeyboard.Models
 {
-    public class NumberKeyModel : INotifyPropertyChanged
+    public class KeyModel : INotifyPropertyChanged
     {
-        public NumberKeyModel(Char KeyName, Keys KeyCode)
+        public KeyModel(String KeyName, Keys KeyCode)
         {
             this.KeyCode = KeyCode;
             this.KeyName = KeyName;
         }
 
-        private Char _KeyName;
-        public Char KeyName
+        private String _KeyName;
+        public String KeyName
         {
             get { return _KeyName; }
             set { _KeyName = value; DoPropertyChanged("KeyName"); }
-        }
-
-        private Char _FirstSymbol;
-        public Char FirstSymbol
-        {
-            get { return _FirstSymbol; }
-            set { _FirstSymbol = value; DoPropertyChanged("FirstSymbol"); }
-        }
-
-        private Char _SecondSymbol;
-        public Char SecondSymbol
-        {
-            get { return _SecondSymbol; }
-            set { _SecondSymbol = value; DoPropertyChanged("SecondSymbol"); }
         }
 
         private Keys _KeyCode;
